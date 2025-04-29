@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Areas",
+    "\\Areas\\Identity",
+    "\\Areas\\Identity\\Pages",
+    "\\Areas\\Identity\\Pages\\Account",
+    "\\Components\\Layout",
+    "\\Components\\Pages",
+    "\\Pages",
+    "\\Pages\\Shared"
+  ],
+  "SelectedNode": "\\Program.cs",
+  "PreviewInSolutionExplorer": false
+}

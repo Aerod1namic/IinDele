@@ -1,0 +1,96 @@
+﻿@page "/profile"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using LearningPlatform.Data
+@using LearningPlatform.Models
+@using Microsoft.EntityFrameworkCore
+@inject AppDbContext DbContext
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+<PageTitle>My Profile</PageTitle>
+
+<h3>My Profile</h3>
+<div class="container">
+    @if (profile == null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        <EditForm Model="profile" OnValidSubmit="SaveProfile" class="mb-4">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label>About</label>
+                <InputText class="form-control" @bind-Value="profile.About" />
+                <ValidationMessage For="@(() => profile.About)" />
+            </div>
+            <div class="form-group">
+                <label>Age</label>
+                <InputNumber class="form-control" @bind-Value="profile.Age" />
+                <ValidationMessage For="@(() => profile.Age)" />
+            </div>
+            <div class="form-group">
+                <label>Gender</label>
+                <InputText class="form-control" @bind-Value="profile.Gender" />
+                <ValidationMessage For="@(() => profile.Gender)" />
+            </div>
+            <div class="form-group">
+                <label>City</label>
+                <InputText class="form-control" @bind-Value="profile.City" />
+                <ValidationMessage For="@(() => profile.City)" />
+            </div>
+            <div class="form-group">
+                <label>Can Teach (comma-separated)</label>
+                <InputText class="form-control" @bind-Value="teachInput" />
+            </div>
+            <div class="form-group">
+                <label>Want to Learn (comma-separated)</label>
+                <InputText class="form-control" @bind-Value="learnInput" />
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Save</button>
+        </EditForm>
+        <p><strong>Can Teach:</strong> @string.Join(", ", profile.CanTeach)</p>
+        <p><strong>Want to Learn:</strong> @string.Join(", ", profile.WantToLearn)</p>
+        <p><strong>Subscription:</strong> @(profile.HasSubscription ? "Active" : "Inactive")</p>
+        <p><strong>Likes:</strong> @profile.Likes | <strong>Dislikes:</strong> @profile.Dislikes</p>
+        <p><strong>Total Collaborations:</strong> @profile.TotalCollaborations</p>
+    }
+</div>
+
+@code {
+    private UserProfile? profile;
+    private string? teachInput;
+    private string? learnInput;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity?.IsAuthenticated == true)
+        {
+            var userId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (userId != null)
+            {
+                profile = await DbContext.UserProfiles.FirstOrDefaultAsync(p => p.Id == userId);
+                if (profile == null)
+                {
+                    profile = new UserProfile { Id = userId };
+                    DbContext.UserProfiles.Add(profile);
+                    await DbContext.SaveChangesAsync();
+                }
+                teachInput = string.Join(", ", profile.CanTeach);
+                learnInput = string.Join(", ", profile.WantToLearn);
+            }
+        }
+    }
+
+    private async Task SaveProfile()
+    {
+        if (profile != null)
+        {
+            profile.CanTeach = teachInput?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList() ?? new List<string>();
+            profile.WantToLearn = learnInput?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList() ?? new List<string>();
+            await DbContext.SaveChangesAsync();
+        }
+    }
+}

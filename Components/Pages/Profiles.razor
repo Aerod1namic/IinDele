@@ -1,0 +1,65 @@
+﻿@page "/profiles"
+@using Microsoft.AspNetCore.Authorization
+@using LearningPlatform.Data
+@using LearningPlatform.Models
+@using Microsoft.EntityFrameworkCore
+@inject AppDbContext DbContext
+@attribute [AllowAnonymous]
+<PageTitle>Profiles</PageTitle>
+
+<h3>User Profiles</h3>
+<div class="container">
+    @if (profiles == null)
+    {
+        <p>Loading...</p>
+    }
+    else if (!profiles.Any())
+    {
+        <p>No profiles found.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var profile in profiles)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">@profile.About</h5>
+                            <p class="card-text">City: @profile.City</p>
+                            <p class="card-text">Can Teach: @string.Join(", ", profile.CanTeach)</p>
+                            <p class="card-text">Wants to Learn: @string.Join(", ", profile.WantToLearn)</p>
+                            <button class="btn btn-primary" @onclick="() => MessageUser(profile.Id)">Message</button>
+                            <button class="btn btn-success" @onclick="() => Collaborate(profile.Id)">Collaborate</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<UserProfile>? profiles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        profiles = await DbContext.UserProfiles.ToListAsync();
+    }
+
+    private void MessageUser(string? userId)
+    {
+        if (userId != null)
+        {
+            // Placeholder: Navigate to messaging page or show modal
+        }
+    }
+
+    private void Collaborate(string? userId)
+    {
+        if (userId != null)
+        {
+            // Placeholder: Navigate to collaboration page or save request
+        }
+    }
+}
