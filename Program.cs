@@ -12,7 +12,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite("Data Source=app.db"));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()

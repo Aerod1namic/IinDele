@@ -4,18 +4,19 @@
 @using LearningPlatform.Models
 @using Microsoft.EntityFrameworkCore
 @inject AppDbContext DbContext
+@inject NavigationManager NavigationManager
 @attribute [AllowAnonymous]
-<PageTitle>Profiles</PageTitle>
+<PageTitle>Профили</PageTitle>
 
-<h3>User Profiles</h3>
+<h3>Профили пользователей</h3>
 <div class="container">
     @if (profiles == null)
     {
-        <p>Loading...</p>
+        <p>Загрузка...</p>
     }
     else if (!profiles.Any())
     {
-        <p>No profiles found.</p>
+        <p>Профили не найдены.</p>
     }
     else
     {
@@ -26,11 +27,16 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5 class="card-title">@profile.About</h5>
-                            <p class="card-text">City: @profile.City</p>
-                            <p class="card-text">Can Teach: @string.Join(", ", profile.CanTeach)</p>
-                            <p class="card-text">Wants to Learn: @string.Join(", ", profile.WantToLearn)</p>
-                            <button class="btn btn-primary" @onclick="() => MessageUser(profile.Id)">Message</button>
-                            <button class="btn btn-success" @onclick="() => Collaborate(profile.Id)">Collaborate</button>
+                            <p class="card-text"><strong>Город:</strong> @profile.City</p>
+                            <p class="card-text"><strong>Возраст:</strong> @profile.Age</p>
+                            <p class="card-text"><strong>Пол:</strong> @profile.Gender</p>
+                            <p class="card-text"><strong>Могу научить:</strong> @string.Join(", ", profile.CanTeach)</p>
+                            <p class="card-text"><strong>Хочу научиться:</strong> @string.Join(", ", profile.WantToLearn)</p>
+                            <p class="card-text"><strong>Лайки:</strong> @profile.Likes</p>
+                            <p class="card-text"><strong>Дизлайки:</strong> @profile.Dislikes</p>
+                            <p class="card-text"><strong>Всего коллабораций:</strong> @profile.TotalCollaborations</p>
+                            <button class="btn btn-primary" @onclick="() => MessageUser(profile.Id)">Написать</button>
+                            <button class="btn btn-success" @onclick="() => Collaborate(profile.Id)">Сотрудничать</button>
                         </div>
                     </div>
                 </div>
@@ -44,14 +50,17 @@
 
     protected override async Task OnInitializedAsync()
     {
+        Console.WriteLine("Загрузка профилей в Profiles.razor");
         profiles = await DbContext.UserProfiles.ToListAsync();
+        Console.WriteLine($"Загружено {profiles?.Count ?? 0} профилей");
+        await InvokeAsync(StateHasChanged);
     }
 
     private void MessageUser(string? userId)
     {
         if (userId != null)
         {
-            // Placeholder: Navigate to messaging page or show modal
+            NavigationManager.NavigateTo($"/messages/{userId}");
         }
     }
 
@@ -59,7 +68,7 @@
     {
         if (userId != null)
         {
-            // Placeholder: Navigate to collaboration page or save request
+            NavigationManager.NavigateTo($"/collaborate/{userId}");
         }
     }
 }

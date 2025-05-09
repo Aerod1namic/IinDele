@@ -7,60 +7,47 @@
 @inject AppDbContext DbContext
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize]
-<PageTitle>My Profile</PageTitle>
+<PageTitle>Мой профиль</PageTitle>
 
-<h3>My Profile</h3>
+<h3>Мой профиль</h3>
 <div class="container">
     @if (profile == null)
     {
-        <p>Loading...</p>
+        <p>Загрузка...</p>
     }
     else
     {
-        <EditForm Model="profile" OnValidSubmit="SaveProfile" class="mb-4">
-            <DataAnnotationsValidator />
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger">@errorMessage</div>
+        }
+        @if (!string.IsNullOrEmpty(successMessage))
+        {
+            <div class="alert alert-success">@successMessage</div>
+        }
+        <EditForm Model="profile" FormName="ProfileForm" OnSubmit="SaveProfile" class="mb-4">
             <div class="form-group">
-                <label>About</label>
-                <InputText class="form-control" @bind-Value="profile.About" />
-                <ValidationMessage For="@(() => profile.About)" />
+                <label>О себе</label>
+                <InputText class="form-control" @bind-Value="profile.About" @oninput="() => LogInputChange()" />
             </div>
             <div class="form-group">
-                <label>Age</label>
-                <InputNumber class="form-control" @bind-Value="profile.Age" />
-                <ValidationMessage For="@(() => profile.Age)" />
+                <label>Могу научить (через запятую)</label>
+                <InputText class="form-control" @bind-Value="teachInput" @oninput="() => LogInputChange()" />
             </div>
-            <div class="form-group">
-                <label>Gender</label>
-                <InputText class="form-control" @bind-Value="profile.Gender" />
-                <ValidationMessage For="@(() => profile.Gender)" />
-            </div>
-            <div class="form-group">
-                <label>City</label>
-                <InputText class="form-control" @bind-Value="profile.City" />
-                <ValidationMessage For="@(() => profile.City)" />
-            </div>
-            <div class="form-group">
-                <label>Can Teach (comma-separated)</label>
-                <InputText class="form-control" @bind-Value="teachInput" />
-            </div>
-            <div class="form-group">
-                <label>Want to Learn (comma-separated)</label>
-                <InputText class="form-control" @bind-Value="learnInput" />
-            </div>
-            <button type="submit" class="btn btn-primary mt-3">Save</button>
+            <button type="submit" class="btn btn-primary mt-3" disabled="@isSaving">Сохранить</button>
+            <button type="button" class="btn btn-secondary mt-3" @onclick="LogFormState">Показать состояние формы</button>
         </EditForm>
-        <p><strong>Can Teach:</strong> @string.Join(", ", profile.CanTeach)</p>
-        <p><strong>Want to Learn:</strong> @string.Join(", ", profile.WantToLearn)</p>
-        <p><strong>Subscription:</strong> @(profile.HasSubscription ? "Active" : "Inactive")</p>
-        <p><strong>Likes:</strong> @profile.Likes | <strong>Dislikes:</strong> @profile.Dislikes</p>
-        <p><strong>Total Collaborations:</strong> @profile.TotalCollaborations</p>
+        <p><strong>Текущее О себе:</strong> @profile.About</p>
+        <p><strong>Текущее Могу научить:</strong> @teachInput</p>
     }
 </div>
 
 @code {
     private UserProfile? profile;
     private string? teachInput;
-    private string? learnInput;
+    private string? errorMessage;
+    private string? successMessage;
+    private bool isSaving;
 
     protected override async Task OnInitializedAsync()
     {
@@ -74,23 +61,78 @@
                 profile = await DbContext.UserProfiles.FirstOrDefaultAsync(p => p.Id == userId);
                 if (profile == null)
                 {
-                    profile = new UserProfile { Id = userId };
+                    profile = new UserProfile { Id = userId, CanTeach = new List<string>(), WantToLearn = new List<string>() };
                     DbContext.UserProfiles.Add(profile);
                     await DbContext.SaveChangesAsync();
+                    Console.WriteLine($"Создан новый профиль для пользователя {userId}");
                 }
                 teachInput = string.Join(", ", profile.CanTeach);
-                learnInput = string.Join(", ", profile.WantToLearn);
+                Console.WriteLine($"Инициализирован профиль - О себе: {profile.About}, Могу научить: [{string.Join(", ", profile.CanTeach)}], teachInput: {teachInput}");
             }
         }
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void LogInputChange()
+    {
+        Console.WriteLine($"Ввод изменен - О себе: {profile?.About}, Могу научить: {teachInput}");
+        StateHasChanged();
+    }
+
+    private void LogFormState()
+    {
+        Console.WriteLine($"Текущее состояние формы - О себе: {profile?.About}, Могу научить: {teachInput}");
     }
 
     private async Task SaveProfile()
     {
-        if (profile != null)
+        if (profile == null) return;
+
+        Console.WriteLine("Вызван SaveProfile");
+
+        isSaving = true;
+        errorMessage = null;
+        successMessage = null;
+
+        try
         {
-            profile.CanTeach = teachInput?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList() ?? new List<string>();
-            profile.WantToLearn = learnInput?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList() ?? new List<string>();
+            // Логирование входных данных формы
+            Console.WriteLine($"Входные данные формы - О себе: {profile.About}, Могу научить: {teachInput}");
+
+            // Обновление списка CanTeach
+            profile.CanTeach = teachInput?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => s.Trim()).ToList() ?? new List<string>();
+
+            // Логирование профиля перед сохранением
+            Console.WriteLine($"Профиль перед сохранением - О себе: {profile.About}, Могу научить: [{string.Join(", ", profile.CanTeach)}]");
+
+            // Обновление или добавление профиля
+            var existingProfile = await DbContext.UserProfiles.FirstOrDefaultAsync(p => p.Id == profile.Id);
+            if (existingProfile == null)
+            {
+                DbContext.UserProfiles.Add(profile);
+                Console.WriteLine($"Добавлен новый профиль для пользователя {profile.Id}");
+            }
+            else
+            {
+                existingProfile.About = profile.About;
+                existingProfile.CanTeach = profile.CanTeach;
+                Console.WriteLine($"Ручное обновление профиля для пользователя {profile.Id}");
+            }
+
             await DbContext.SaveChangesAsync();
+            successMessage = "Профиль успешно сохранен!";
+            Console.WriteLine($"Профиль сохранен в SQLite для пользователя {profile.Id}. О себе: {profile.About}, Могу научить: [{string.Join(", ", profile.CanTeach)}]");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Ошибка при сохранении профиля: {ex.Message}";
+            Console.WriteLine($"Исключение SaveProfile: {ex}");
+        }
+        finally
+        {
+            isSaving = false;
+            await InvokeAsync(StateHasChanged);
         }
     }
 }

@@ -6,11 +6,16 @@ namespace LearningPlatform.Models
 {
     public class UserProfile
     {
-        public string? Id { get; set; } // Nullable
-        public string? About { get; set; } // Nullable
+        [Key]
+        public string Id { get; set; } = string.Empty;
+        [StringLength(500)]
+        public string? About { get; set; }
+        [Range(0, 150)]
         public int Age { get; set; }
-        public string? Gender { get; set; } // Nullable
-        public string? City { get; set; } // Nullable
+        [StringLength(50)]
+        public string? Gender { get; set; }
+        [StringLength(100)]
+        public string? City { get; set; }
         public List<string> CanTeach { get; set; } = new List<string>();
         public List<string> WantToLearn { get; set; } = new List<string>();
         public bool HasSubscription { get; set; }
