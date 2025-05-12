@@ -1,0 +1,126 @@
+@{
+    ViewData["Title"] = "О нас";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-5">О нас</h1>
+
+    <div class="row mb-5">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">Что такое БАРТЕР?</h2>
+            <p class="lead">
+                БАРТЕР - это платформа для обмена знаниями и навыками, где каждый может быть как учителем, так и учеником.
+                Мы создаем сообщество, где люди могут делиться своими знаниями и учиться новому у других.
+            </p>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title">Наши возможности</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">✓ Поиск учителей и учеников</li>
+                        <li class="mb-2">✓ Создание профиля с навыками</li>
+                        <li class="mb-2">✓ Система бартерного обмена знаниями</li>
+                        <li class="mb-2">✓ Рейтинговая система</li>
+                        <li class="mb-2">✓ Удобный поиск по параметрам</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title">Наше предназначение</h3>
+                    <p class="card-text">
+                        Мы стремимся создать эффективную платформу для обмена знаниями, где каждый может найти своего идеального учителя или ученика.
+                        Наша цель - сделать обучение доступным и взаимовыгодным для всех участников.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title">О команде</h3>
+                    <p class="card-text">
+                        Мы - команда энтузиастов, которые верят в силу обмена знаниями. 
+                        Наша команда состоит из опытных разработчиков, дизайнеров и специалистов по образованию, 
+                        объединенных общей целью создать лучшую платформу для обмена навыками.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row md-5">
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-lg-start">
+                    <img src="~/Roman.jpg"/>
+                    <h3 class="card-title">Роман Ческидов</h3>
+                    <p class="card-text">
+                        Разработчик сайта
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-lg-start">
+                    <img src="~/Krill.jpg"/>
+                    <h3 class="card-title">Крилл Лобазов</h3>
+                    <p class="card-text">
+                        Разработчик приложения
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-lg-start">
+                    <img src="~/NIkita.jpg"/>
+                    <h3 class="card-title">Никита Рупшис</h3>
+                    <p class="card-text">
+                        Капитан/генератор идей
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-lg-start">
+                    <img src="~/Sona.jpg"/>
+                    <h3 class="card-title">Соня Лане</h3>
+                    <p class="card-text">
+                        Дизайнер
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row subscription">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Подписка</h3>
+                    <p class="card-text">
+                        Получите доступ ко всем возможностям платформы с нашей премиум подпиской
+                    </p>
+                    <a href="@Url.Action("Subscribe", "Subscription")" class="btn btn-primary">Оформить подписку</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<style>
+    .subscription{
+        margin-top: 40px;
+    }
+</style>

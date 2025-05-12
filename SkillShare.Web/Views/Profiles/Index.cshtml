@@ -1,0 +1,165 @@
+@using SkillShare.Web.ViewModels
+@model ProfileSearchViewModel
+@{
+    ViewData["Title"] = "Анкеты пользователей";
+}
+
+<div class="container my-4">
+    <h2 class="mb-4">Анкеты пользователей</h2>
+
+    <!-- Форма поиска -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form asp-action="Index" method="get">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="SearchTerm" class="form-label">Поиск по имени или описанию</label>
+                        <input asp-for="SearchTerm" class="form-control" placeholder="Введите текст для поиска...">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="City" class="form-label">Город</label>
+                        <input asp-for="City" class="form-control" placeholder="Введите город...">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="TeachingSkill" class="form-label">Поиск по навыкам обучения</label>
+                        <input asp-for="TeachingSkill" class="form-control" placeholder="Введите навык...">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="LearningSkill" class="form-label">Поиск по изучаемым навыкам</label>
+                        <input asp-for="LearningSkill" class="form-control" placeholder="Введите навык...">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Возраст</label>
+                        <div class="row">
+                            <div class="col">
+                                <input asp-for="MinAge" class="form-control" placeholder="От">
+                            </div>
+                            <div class="col">
+                                <input asp-for="MaxAge" class="form-control" placeholder="До">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search"></i> Поиск
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Список анкет -->
+    <div class="row">
+        @foreach (var profile in Model.Profiles)
+        {
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@profile.FullName</h5>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <i class="bi bi-geo-alt"></i> @profile.City
+                                <span class="mx-2">|</span>
+                                <i class="bi bi-person"></i> @profile.Age лет
+                            </small>
+                        </p>
+                        
+                        @if (!string.IsNullOrEmpty(profile.AboutMe))
+                        {
+                            <p class="card-text">@profile.AboutMe</p>
+                        }
+
+                        <div class="mb-3">
+                            <h6><i class="bi bi-mortarboard-fill text-success"></i> Могу научить:</h6>
+                            <div class="d-flex flex-wrap gap-1">
+                                @foreach (var skill in profile.TeachingSkills)
+                                {
+                                    <span class="badge bg-success">@skill.Name</span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <h6><i class="bi bi-book text-primary"></i> Хочу научиться:</h6>
+                            <div class="d-flex flex-wrap gap-1">
+                                @foreach (var skill in profile.LearningSkills)
+                                {
+                                    <span class="badge bg-primary">@skill.Name</span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <i class="bi bi-hand-thumbs-up text-success"></i> @profile.PositiveRatings
+                                <i class="bi bi-hand-thumbs-down text-danger ms-2"></i> @profile.NegativeRatings
+                            </div>
+                            <div>
+                                <i class="bi bi-people"></i> @profile.TotalCollaborations
+                            </div>
+                            @if (profile.HasActiveSubscription)
+                            {
+                                <span class="badge bg-warning">
+                                    <i class="bi bi-star-fill"></i> Premium
+                                </span>
+                            }
+                        </div>
+                    </div>
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-outline-primary flex-grow-1" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#messageModal@(profile.Id)">
+                                    <i class="bi bi-chat"></i> Сообщение
+                                </button>
+                                <a asp-action="InitiateCollaboration" 
+                                   asp-route-userId="@profile.Id" 
+                                   class="btn btn-primary flex-grow-1">
+                                    <i class="bi bi-people"></i> Сотрудничать
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Модальное окно для сообщения -->
+                        <div class="modal fade" id="messageModal@(profile.Id)" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form asp-action="SendMessage" method="post">
+                                        <input type="hidden" name="userId" value="@profile.Id">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Сообщение для @profile.FullName</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="message" class="form-label">Текст сообщения</label>
+                                                <textarea name="message" class="form-control" rows="3" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                            <button type="submit" class="btn btn-primary">Отправить</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (!Model.Profiles.Any())
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> По вашему запросу ничего не найдено.
+        </div>
+    }
+</div> 

@@ -1,0 +1,102 @@
+@model SubscriptionType
+
+@{
+    ViewData["Title"] = "Подписка";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-5">Выберите план подписки</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Месячный</h3>
+                    <h4 class="card-subtitle mb-2 text-muted">499 ₽/месяц</h4>
+                    <hr />
+                    <ul class="list-unstyled">
+                        <li class="mb-2">✓ Неограниченные сообщения</li>
+                        <li class="mb-2">✓ Расширенный поиск</li>
+                        <li class="mb-2">✓ Приоритетная поддержка</li>
+                    </ul>
+                    <form asp-action="Subscribe" method="post">
+                        <input type="hidden" name="type" value="@SubscriptionType.Monthly" />
+                        <button type="submit" class="btn btn-primary">Выбрать</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-primary">
+                <div class="card-body text-center">
+                    <div class="ribbon ribbon-top-right"><span>Популярный</span></div>
+                    <h3 class="card-title">Квартальный</h3>
+                    <h4 class="card-subtitle mb-2 text-muted">1299 ₽/квартал</h4>
+                    <hr />
+                    <ul class="list-unstyled">
+                        <li class="mb-2">✓ Все преимущества месячного плана</li>
+                        <li class="mb-2">✓ Скидка 15%</li>
+                        <li class="mb-2">✓ Статистика сотрудничества</li>
+                    </ul>
+                    <form asp-action="Subscribe" method="post">
+                        <input type="hidden" name="type" value="@SubscriptionType.Quarterly" />
+                        <button type="submit" class="btn btn-primary">Выбрать</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Годовой</h3>
+                    <h4 class="card-subtitle mb-2 text-muted">4999 ₽/год</h4>
+                    <hr />
+                    <ul class="list-unstyled">
+                        <li class="mb-2">✓ Все преимущества квартального плана</li>
+                        <li class="mb-2">✓ Скидка 30%</li>
+                        <li class="mb-2">✓ VIP поддержка</li>
+                    </ul>
+                    <form asp-action="Subscribe" method="post">
+                        <input type="hidden" name="type" value="@SubscriptionType.Yearly" />
+                        <button type="submit" class="btn btn-primary">Выбрать</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .ribbon {
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+        position: absolute;
+    }
+
+    .ribbon span {
+        position: absolute;
+        display: block;
+        width: 225px;
+        padding: 8px 0;
+        background-color: #3498db;
+        box-shadow: 0 5px 10px rgba(0,0,0,.1);
+        color: #fff;
+        font-size: 13px;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .ribbon-top-right {
+        top: -10px;
+        right: -10px;
+    }
+
+    .ribbon-top-right span {
+        left: -25px;
+        top: 30px;
+        transform: rotate(45deg);
+    }
+</style> 

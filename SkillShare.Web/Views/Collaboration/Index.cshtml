@@ -1,0 +1,218 @@
+@using SkillShare.Web.Models
+@using SkillShare.Web.ViewModels
+@model CollaborationListViewModel
+@{
+    ViewData["Title"] = "Мои сотрудничества";
+}
+
+<div class="container my-4">
+    <h2 class="mb-4">Мои сотрудничества</h2>
+
+    @if (Model.PendingRequests.Any())
+    {
+        <div class="card mb-4">
+            <div class="card-header bg-warning">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-clock"></i> Ожидающие ответа
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    @foreach (var collaboration in Model.PendingRequests)
+                    {
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">@collaboration.PartnerName</h5>
+                                    <p class="text-muted">
+                                        <small>
+                                            <i class="bi bi-calendar"></i> @collaboration.CreatedAt.ToString("dd.MM.yyyy")
+                                        </small>
+                                    </p>
+
+                                    <div class="mb-3">
+                                        <h6><i class="bi bi-mortarboard-fill text-success"></i> Обучение:</h6>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            @foreach (var skill in collaboration.TeachingSkills)
+                                            {
+                                                <span class="badge bg-success">@skill</span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <h6><i class="bi bi-book text-primary"></i> Изучение:</h6>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            @foreach (var skill in collaboration.LearningSkills)
+                                            {
+                                                <span class="badge bg-primary">@skill</span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <p class="mb-3">
+                                        <i class="bi bi-arrow-left-right"></i> Бартерный обмен знаниями
+                                    </p>
+
+                                    @if (!collaboration.IsInitiator)
+                                    {
+                                        <div class="d-flex gap-2">
+                                            <form asp-action="Accept" method="post" style="flex: 1">
+                                                <input type="hidden" name="id" value="@collaboration.Id" />
+                                                <button type="submit" class="btn btn-success w-100">
+                                                    <i class="bi bi-check-lg"></i> Принять
+                                                </button>
+                                            </form>
+                                            <form asp-action="Reject" method="post" style="flex: 1">
+                                                <input type="hidden" name="id" value="@collaboration.Id" />
+                                                <button type="submit" class="btn btn-danger w-100">
+                                                    <i class="bi bi-x-lg"></i> Отклонить
+                                                </button>
+                                            </form>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-info mb-0">
+                                            <i class="bi bi-info-circle"></i> Ожидается ответ от партнера
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (Model.ActiveCollaborations.Any())
+    {
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-play-circle"></i> Активные сотрудничества
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    @foreach (var collaboration in Model.ActiveCollaborations)
+                    {
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">@collaboration.PartnerName</h5>
+                                    <p class="text-muted">
+                                        <small>
+                                            <i class="bi bi-calendar"></i> @collaboration.CreatedAt.ToString("dd.MM.yyyy")
+                                        </small>
+                                    </p>
+
+                                    <div class="mb-3">
+                                        <h6><i class="bi bi-mortarboard-fill text-success"></i> Обучение:</h6>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            @foreach (var skill in collaboration.TeachingSkills)
+                                            {
+                                                <span class="badge bg-success">@skill</span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <h6><i class="bi bi-book text-primary"></i> Изучение:</h6>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            @foreach (var skill in collaboration.LearningSkills)
+                                            {
+                                                <span class="badge bg-primary">@skill</span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <p class="mb-3">
+                                        <i class="bi bi-arrow-left-right"></i> Бартерный обмен знаниями
+                                    </p>
+
+                                    <form asp-action="Complete" method="post">
+                                        <input type="hidden" name="id" value="@collaboration.Id" />
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="bi bi-check-circle"></i> Завершить сотрудничество
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (Model.CompletedCollaborations.Any())
+    {
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-check-circle"></i> Завершенные сотрудничества
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    @foreach (var collaboration in Model.CompletedCollaborations)
+                    {
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">@collaboration.PartnerName</h5>
+                                    <p class="text-muted">
+                                        <small>
+                                            <i class="bi bi-calendar"></i> @collaboration.CreatedAt.ToString("dd.MM.yyyy")
+                                        </small>
+                                    </p>
+
+                                    <div class="mb-3">
+                                        <h6><i class="bi bi-mortarboard-fill text-success"></i> Обучение:</h6>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            @foreach (var skill in collaboration.TeachingSkills)
+                                            {
+                                                <span class="badge bg-success">@skill</span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <h6><i class="bi bi-book text-primary"></i> Изучение:</h6>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            @foreach (var skill in collaboration.LearningSkills)
+                                            {
+                                                <span class="badge bg-primary">@skill</span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <p class="mb-3">
+                                        <i class="bi bi-arrow-left-right"></i> Бартерный обмен знаниями
+                                    </p>
+
+                                    @if (collaboration.CanRate)
+                                    {
+                                        <a asp-action="Rate" asp-route-id="@collaboration.Id" class="btn btn-primary w-100">
+                                            <i class="bi bi-star"></i> Оценить сотрудничество
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (!Model.PendingRequests.Any() && !Model.ActiveCollaborations.Any() && !Model.CompletedCollaborations.Any())
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> У вас пока нет сотрудничеств. 
+            <a asp-controller="Profiles" asp-action="Index">Найдите партнера</a> для обмена знаниями!
+        </div>
+    }
+</div> 

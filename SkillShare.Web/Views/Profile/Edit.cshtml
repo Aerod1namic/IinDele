@@ -1,0 +1,79 @@
+@model SkillShare.Web.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Редактировать профиль";
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Редактировать профиль</h2>
+                    <form asp-action="Edit" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="FirstName" class="control-label">Имя</label>
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="LastName" class="control-label">Фамилия</label>
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Age" class="control-label">Возраст</label>
+                                    <input asp-for="Age" class="form-control" type="number" />
+                                    <span asp-validation-for="Age" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="Gender" class="control-label">Пол</label>
+                                    <select asp-for="Gender" class="form-control">
+                                        <option value="Мужской">Мужской</option>
+                                        <option value="Женский">Женский</option>
+                                    </select>
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="City" class="control-label">Город</label>
+                                    <input asp-for="City" class="form-control" />
+                                    <span asp-validation-for="City" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="AboutMe" class="control-label">О себе</label>
+                            <textarea asp-for="AboutMe" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="AboutMe" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                            <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

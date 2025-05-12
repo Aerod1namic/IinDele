@@ -1,0 +1,76 @@
+@model SkillShare.Web.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Профиль";
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">@Model.FirstName @Model.LastName</h2>
+                    <p class="text-muted">@Model.City</p>
+                    <hr />
+                    <div class="mb-3">
+                        <strong>Возраст:</strong> @Model.Age
+                    </div>
+                    <div class="mb-3">
+                        <strong>Пол:</strong> @Model.Gender
+                    </div>
+                    <div class="mb-3">
+                        <strong>О себе:</strong>
+                        <p>@Model.AboutMe</p>
+                    </div>
+                    <a asp-action="Edit" class="btn btn-primary">Редактировать профиль</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3>Могу научить</h3>
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach (var skill in Model.TeachingSkills)
+                        {
+                            <span class="badge bg-primary">@skill.Name</span>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3>Хочу научиться</h3>
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach (var skill in Model.LearningSkills)
+                        {
+                            <span class="badge bg-secondary">@skill.Name</span>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h3>Статистика</h3>
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <h4 class="text-success">@Model.PositiveRatings</h4>
+                            <p>Положительные отзывы</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h4 class="text-danger">@Model.NegativeRatings</h4>
+                            <p>Отрицательные отзывы</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h4>@Model.TotalCollaborations</h4>
+                            <p>Всего сотрудничеств</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

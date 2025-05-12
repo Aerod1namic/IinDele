@@ -1,0 +1,70 @@
+@using SkillShare.Web.ViewModels
+@model RateCollaborationViewModel
+@{
+    ViewData["Title"] = "Оценка сотрудничества";
+}
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Оценка сотрудничества с @Model.PartnerName</h2>
+
+                    <form asp-action="SubmitRating" method="post">
+                        <input type="hidden" asp-for="CollaborationId" />
+                        <input type="hidden" asp-for="PartnerName" />
+
+                        <div class="mb-4">
+                            <label class="form-label">Оценка:</label>
+                            <div class="d-flex gap-2 justify-content-center">
+                                @for (var i = 1; i <= 5; i++)
+                                {
+                                    <div class="form-check">
+                                        <input type="radio" 
+                                               class="form-check-input" 
+                                               asp-for="Rating" 
+                                               value="@i" 
+                                               id="rating@(i)" 
+                                               required>
+                                        <label class="form-check-label" for="rating@(i)">
+                                            @for (var j = 1; j <= i; j++)
+                                            {
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                            }
+                                            @for (var j = i + 1; j <= 5; j++)
+                                            {
+                                                <i class="bi bi-star text-warning"></i>
+                                            }
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Feedback" class="form-label">Отзыв:</label>
+                            <textarea asp-for="Feedback" 
+                                      class="form-control" 
+                                      rows="3" 
+                                      placeholder="Опишите ваш опыт сотрудничества..."></textarea>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-star"></i> Отправить оценку
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-x"></i> Отмена
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 
