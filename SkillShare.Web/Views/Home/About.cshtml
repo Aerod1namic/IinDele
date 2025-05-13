@@ -2,13 +2,13 @@
     ViewData["Title"] = "О нас";
 }
 
-<div class="container my-5">
+<div class="container my-5 font">
     <h1 class="text-center mb-5">О нас</h1>
 
     <div class="row mb-5">
         <div class="col-md-8 offset-md-2">
             <h2 class="mb-4">Что такое БАРТЕР?</h2>
-            <p class="lead">
+            <p class="lead" style="font-weight:500">
                 БАРТЕР - это платформа для обмена знаниями и навыками, где каждый может быть как учителем, так и учеником.
                 Мы создаем сообщество, где люди могут делиться своими знаниями и учиться новому у других.
             </p>
@@ -17,7 +17,7 @@
 
     <div class="row mb-5">
         <div class="col-md-4">
-            <div class="card h-100">
+            <div class="card h-100 backcolor">
                 <div class="card-body">
                     <h3 class="card-title">Наши возможности</h3>
                     <ul class="list-unstyled">
@@ -32,7 +32,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100">
+            <div class="card h-100 backcolor">
                 <div class="card-body">
                     <h3 class="card-title">Наше предназначение</h3>
                     <p class="card-text">
@@ -44,7 +44,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100">
+            <div class="card h-100 backcolor">
                 <div class="card-body">
                     <h3 class="card-title">О команде</h3>
                     <p class="card-text">
@@ -59,7 +59,7 @@
 
     <div class="row md-5">
         <div class="col-md-3">
-            <div class="card h-100">
+            <div class="card h-100 backcolor">
                 <div class="card-body text-lg-start">
                     <img src="~/Roman.jpg"/>
                     <h3 class="card-title">Роман Ческидов</h3>
@@ -70,7 +70,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card h-100">
+            <div class="card h-100 backcolor">
                 <div class="card-body text-lg-start">
                     <img src="~/Krill.jpg"/>
                     <h3 class="card-title">Крилл Лобазов</h3>
@@ -81,7 +81,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card h-100">
+            <div class="card h-100 backcolor">
                 <div class="card-body text-lg-start">
                     <img src="~/NIkita.jpg"/>
                     <h3 class="card-title">Никита Рупшис</h3>
@@ -92,7 +92,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card h-100">
+            <div class="card h-100 backcolor">
                 <div class="card-body text-lg-start">
                     <img src="~/Sona.jpg"/>
                     <h3 class="card-title">Соня Лане</h3>
@@ -106,7 +106,7 @@
 
     <div class="row subscription">
         <div class="col-md-6 offset-md-3">
-            <div class="card">
+            <div class="card backcolor">
                 <div class="card-body text-center">
                     <h3 class="card-title">Подписка</h3>
                     <p class="card-text">
@@ -122,5 +122,9 @@
 <style>
     .subscription{
         margin-top: 40px;
+    }
+    .backcolor{
+        background-color:#396799;
+        color:white;
     }
 </style>

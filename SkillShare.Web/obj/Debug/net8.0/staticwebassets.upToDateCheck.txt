@@ -1,5 +1,7 @@
 wwwroot\css\site.css
-wwwroot\favicon.ico
+wwwroot\elephant-trunk-drawing-13.svg
+wwwroot\favicon.png
+wwwroot\fon2 (1).png
 wwwroot\js\site.js
 wwwroot\Krill.jpg
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
@@ -65,3 +67,4 @@ wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
 wwwroot\NIkita.jpg
 wwwroot\Roman.jpg
 wwwroot\Sona.jpg
+wwwroot\stock-photo-abstract-silhouette-elephant-in-profile-monochrome-307208552.svg

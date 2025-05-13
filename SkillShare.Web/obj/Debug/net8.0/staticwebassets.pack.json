@@ -25,8 +25,16 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
-      "Id": "C:\\Users\\Origo\\Documents\\GitHub\\IinDele\\SkillShare.Web\\wwwroot\\favicon.ico",
-      "PackagePath": "staticwebassets\\favicon.ico"
+      "Id": "C:\\Users\\Origo\\Documents\\GitHub\\IinDele\\SkillShare.Web\\wwwroot\\elephant-trunk-drawing-13.svg",
+      "PackagePath": "staticwebassets\\elephant-trunk-drawing-13.svg"
+    },
+    {
+      "Id": "C:\\Users\\Origo\\Documents\\GitHub\\IinDele\\SkillShare.Web\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Users\\Origo\\Documents\\GitHub\\IinDele\\SkillShare.Web\\wwwroot\\fon2 (1).png",
+      "PackagePath": "staticwebassets\\fon2 (1).png"
     },
     {
       "Id": "C:\\Users\\Origo\\Documents\\GitHub\\IinDele\\SkillShare.Web\\wwwroot\\js\\site.js",
@@ -271,6 +279,10 @@
     {
       "Id": "C:\\Users\\Origo\\Documents\\GitHub\\IinDele\\SkillShare.Web\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.min.map"
+    },
+    {
+      "Id": "C:\\Users\\Origo\\Documents\\GitHub\\IinDele\\SkillShare.Web\\wwwroot\\stock-photo-abstract-silhouette-elephant-in-profile-monochrome-307208552.svg",
+      "PackagePath": "staticwebassets\\stock-photo-abstract-silhouette-elephant-in-profile-monochrome-307208552.svg"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.SkillShare.Web.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
