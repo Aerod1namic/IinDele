@@ -14,6 +14,7 @@ namespace SkillShare.Web.ViewModels
         public string Password { get; set; } = string.Empty;
 
         [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Подтвердите пароль")]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public string ConfirmPassword { get; set; } = string.Empty;
 

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SkillShare.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+60888ddc04192ae4942f04cf76cae9e0b9b9b115")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+df5b9ee079f85f0eb5961adf4a294ce6404ad13f")]
 [assembly: System.Reflection.AssemblyProductAttribute("SkillShare.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SkillShare.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

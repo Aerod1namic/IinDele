@@ -21,7 +21,13 @@ namespace SkillShare.Web.Controllers
 
         public async Task<IActionResult> Index(ProfileSearchViewModel searchModel)
         {
+            var currentUser = await _userManager.GetUserAsync(User);
             var query = _context.Users.AsQueryable();
+
+            if (currentUser != null)
+            {
+                query = query.Where(u => u.Id != currentUser.Id);
+            }
 
             // Применяем фильтры поиска
             if (!string.IsNullOrEmpty(searchModel.SearchTerm))
